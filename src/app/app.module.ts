@@ -15,6 +15,9 @@ import {MatCardModule} from '@angular/material/card';
 import { CartComponent } from './components/Cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
 import { ProductComponent } from './components/product/product.component';
+import { CategoryComponent } from './components/category/category.component';
+import { ConfirmationComponent } from './components/confirmation/confirmation.component';
+import { NotFoundComponent } from './components/not-found/not-found.component';
 
 
 
@@ -27,7 +30,10 @@ import { ProductComponent } from './components/product/product.component';
     FooterComponent,
     CartComponent,
     CheckoutComponent,
-    ProductComponent
+    ProductComponent,
+    CategoryComponent,
+    ConfirmationComponent,
+    NotFoundComponent
   ],
   imports: [
     HttpClientModule,
