@@ -1,14 +1,25 @@
 
 <p>
   <mat-toolbar>
-    <span>Skishop</span>
+    
+    <mat-icon>home</mat-icon>
+    <span><a [routerLink]="['/home']" >Skishop</a></span>
+
     <span class="example-spacer"></span>
+    <span><a [routerLink]="['/admin']" >Admin</a></span>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
      <mat-icon>menu</mat-icon>
    </button>
 
-  <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+  <button mat-icon-button class="example-icon" aria-label="shopping cart button" [routerLink]="['/cart']">
    <mat-icon>shopping_cart</mat-icon>
  </button>
 </mat-toolbar>
 </p>
+
+<!-- <mat-sidenav-container>
+  <mat-sidenav mode="side" [(opened)]="opened">CATEGORIES</mat-sidenav>
+  <mat-sidenav-content>CATEGORIES
+    <button (click)="opened=!opened">Toggle opened</button>
+  </mat-sidenav-content>
+</mat-sidenav-container> -->
