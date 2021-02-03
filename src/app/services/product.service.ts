@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import IProduct from 'src/app/models/IProduct'
 
@@ -20,7 +20,20 @@ export class ProductService {
     let myObserver = {
       next: (products) => {this.products.next(products);}
     }
-    this.http.get(this.SERVER_URL+'/products').subscribe(myObserver);
-    console.log(this.products)
+    this.http.get(`${this.SERVER_URL}/products`).subscribe(myObserver);
+    console.log(this.products, "logged from product service getallproducts()")
+  }
+
+  getProduct(id: number): Observable<IProduct>{
+
+    console.log('getproduct ran')
+
+    return this.http.get<IProduct>(`${this.SERVER_URL}/products/${id}`);
+  }
+  removeProduct() {
+    // let index = this.products.indexOf(product);
+    // if (index !== -1) {
+    //   this.products.splice(index, 1);
+    // }
   }
 }

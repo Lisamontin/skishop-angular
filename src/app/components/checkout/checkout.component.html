@@ -1,14 +1,14 @@
 <p>checkout works!</p>
 
 <p>Cart Content</p>
-<p>Total price</p>
+<p>Total price: {{totalprice}} Kr</p>
 
 <div class="cart-item" *ngFor="let item of items">
-  <span>{{ item.name }} </span>
-  <span>{{ item.price | currency }}</span>
+  <span>{{ item.productName }} </span>
+  <span>{{ item.totalPrice | currency }}</span>
 </div>
 
-<form [formGroup]="checkoutForm" ngSubmit="onSubmit()">
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
 
   <div>
     <label for="firstName">
@@ -22,6 +22,20 @@
       Last Name
     </label>
     <input id="lastName" type="text" formControlName="lastName">
+  </div>
+
+  <div>
+    <label for="phoneNumber">
+      Phone Number
+    </label>
+    <input id="phoneNumber" type="number" formControlName="phoneNumber">
+  </div>
+
+  <div>
+    <label for="email">
+      E-mail
+    </label>
+    <input id="email" type="text" formControlName="email">
   </div>
 
   <div>

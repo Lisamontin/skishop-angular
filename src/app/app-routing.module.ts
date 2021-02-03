@@ -8,6 +8,8 @@ import { CheckoutComponent } from './components/checkout/checkout.component';
 import { CategoryComponent } from './components/category/category.component';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { ProductsComponent } from './components/products/products.component';
+import { AdminComponent } from './components/admin/admin.component';
 
 
 const routes: Routes = [
@@ -18,6 +20,8 @@ const routes: Routes = [
   { path: 'checkout', component: CheckoutComponent },
   { path: 'category', component: CategoryComponent },
   { path: 'confirmation', component: ConfirmationComponent },
+  { path: 'products', component: ProductsComponent },
+  { path: 'admin', component: AdminComponent},
   { path: '**', component: NotFoundComponent }
 ]
 

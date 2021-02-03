@@ -5,6 +5,9 @@
     <h3>{{ product.productName }}</h3>
     <h4>{{ product.price | currency }}</h4>
     <p>{{ product.description }}</p>
-  
+    <img src="https://via.placeholder.com/150" alt="">
+    <div>
+    <button mat-button color="primary" (click)="addToCart(product)">Add To Cart</button>
+  </div>
 </div>
  

@@ -4,20 +4,23 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-// import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './components/home/home.component';
 import { HeaderComponent } from './components/header/header.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import {MatToolbarModule} from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
 import { FooterComponent } from './components/footer/footer.component';
-import {MatCardModule} from '@angular/material/card';
 import { CartComponent } from './components/Cart/cart.component';
 import { CheckoutComponent } from './components/checkout/checkout.component';
-import { ProductComponent } from './components/product/product.component';
 import { CategoryComponent } from './components/category/category.component';
 import { ConfirmationComponent } from './components/confirmation/confirmation.component';
 import { NotFoundComponent } from './components/not-found/not-found.component';
+import { DetailsComponent } from './components/details/details.component';
+import { ProductsComponent } from './components/products/products.component';
+import { MaterialModule } from './material/material.module';
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
+import { AdminComponent } from './components/admin/admin.component'
+
+
 
 
 
@@ -30,19 +33,20 @@ import { NotFoundComponent } from './components/not-found/not-found.component';
     FooterComponent,
     CartComponent,
     CheckoutComponent,
-    ProductComponent,
     CategoryComponent,
     ConfirmationComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    DetailsComponent,
+    ProductsComponent,
+    AdminComponent,
   ],
   imports: [
+    ReactiveFormsModule,
+    FormsModule,
     HttpClientModule,
-    MatCardModule,
-    MatIconModule,
-    MatToolbarModule,
+    MaterialModule,
     BrowserModule,
     AppRoutingModule,
-    // RouterModule.forRoot(routes),
     BrowserAnimationsModule
   ],
   providers: [],

@@ -1,6 +1,10 @@
 <h3>CART</h3>
-<div class="cart-item" *ngFor="let item of items">
+<div class="cart-item" *ngFor="let item of cart; let i=index">
+  
   <span>{{ item.productName }}</span>
+  <span>{{ item.product[i].productName }}</span>
   <span>{{ item.price }}</span>
+  <span>{{  item }}</span>
+
 </div>
 <button mat-button [routerLink]="['/checkout']">CHECKOUT</button>
