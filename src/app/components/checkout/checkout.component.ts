@@ -44,8 +44,10 @@ export class CheckoutComponent implements OnInit {
      //DECLARE VARS
      items: ICartItem[] = [];
      totalprice: number;
-     productOrder: IProductOrder[] = [];
+     productOrders: IProductOrder[] = [];
      form: FormGroup;
+     order: IOrder;
+     orderToPost: IOrder;
      SERVER_URL = environment.SERVER_URL;
       
     
@@ -57,48 +59,59 @@ export class CheckoutComponent implements OnInit {
     onSubmit(): void {
       //process checkoutdata here
       console.log(this.form.value, "form value logged from onSubmit()");
-
-      var formData: any = new FormData();
-        formData.append("firstName", this.form.get('firstName').value);
-        formData.append("lastName", this.form.get('lastName').value);
-        formData.append("phoneNumber", this.form.get('phoneNumber').value);
-        formData.append("emamil", this.form.get('email').value);
-        formData.append("address", this.form.get('address').value);
-
-        var formDataStringed = JSON.stringify(formData);
       
-        const httpOptions = {
-          headers: new HttpHeaders({'Content-Type': 'application/json'})
+      // var formData: any = new FormData();
+      //   formData.append("firstName", this.form.get('firstName').value);
+      //   formData.append("lastName", this.form.get('lastName').value);
+      //   formData.append("phoneNumber", this.form.get('phoneNumber').value);
+      //   formData.append("emamil", this.form.get('email').value);
+      //   formData.append("address", this.form.get('address').value);
+      
+      //   var formDataStringed = JSON.stringify(formData);
+      
+      const httpOptions = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'})
         }
+        
+        this.http.post(`${this.SERVER_URL}/Customers`, this.form.value, httpOptions).subscribe(
+          (response) => console.log(response),
+          (error) => console.log(error)
+          )
+          
+          
+          
+          // to fill productOrder (order rows)
+          
+          for (let i = 0; i < this.items.length; i++) {
+            const productId = this.items[i].product.id;
+            const quantity = this.items[i].amount;
+            const totalPrice = this.totalprice;
+            // const id = 2;
+            // const orderId = 2;//this.order.id; //error undefined.... how to get current id.....
+            
+            this.productOrders.push({ productId, quantity, totalPrice }); 
+            console.log("productOrder:", this.productOrders)
+          }; 
 
-      this.http.post(`${this.SERVER_URL}/Customers`, formDataStringed, httpOptions).subscribe(
-        (response) => console.log(response),
-        (error) => console.log(error)
-      )
+          // // test stuff
+          // const productId = 1;
+          // const quantity = 2;
+          // const totalPrice = 3;
+          // const orderId = 2;
+          
+          // this.productOrder.push({ orderId, productId, quantity, totalPrice }); 
+          
+        
 
-
-
-      //to fill productOrder (order rows)
-    for (let i = 0; i < this.items.length; i++) {
-      const productId = this.items[i].product.id;
-      const quantity = this.items[i].amount;
-      const totalPrice = this.totalprice;
-      const id = 0;
-      const orderId = 0;
-
-      this.productOrder.push({ id, orderId, productId, quantity, totalPrice })
-      
-    };  
-
-    //const with final order to be sent
-      const newOrder: IOrder = {  
-        // id: 0,  
-        customerId: 1, // get customerId from getCustomer()... can it be done?
-        paymentMethod: 'AmEx',
-        // productOrder: this.productOrder//orderRow  
-    }
-
-    this.orderService.postOrder(newOrder);
+      //const with final order to be sent
+        const orderToPost: IOrder = {  
+          // id: 1, // how to get this number.. its created when posted... needed in productOrder.. 
+          customerId: 1, // get customerId from getCustomer()... can it be done?
+          paymentMethod: 'AmEx',
+          productOrders: this.productOrders, //orderRow  
+      }
+console.log("final order: ", orderToPost)
+    this.orderService.postOrder(orderToPost);
 
 
     this.items = this.cartService.clearCart();
@@ -109,8 +122,6 @@ export class CheckoutComponent implements OnInit {
     }
 
     // get info from form to post to customer table
-
-    
   
   
   calculateTotalPrice() {
