@@ -2,7 +2,18 @@
 <p>All Orders:</p>
 
  <div *ngFor="let o of orders">
+   <button>remove</button>
  id: {{o.id}}
  customerId: {{o.customerId}}
  payment menthod: {{o.paymentMethod}}
+ Order row: {{o.productOrder}}
+ </div>
+
+ <p>All Customers:</p>
+
+ <div *ngFor="let c of customers" > 
+  id: {{c.id}}
+  first name: {{c.firstName}}
+  Last name : {{c.lastName}}
+  phone Number: {{c.phoneNumber}}
  </div>
