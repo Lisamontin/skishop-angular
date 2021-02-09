@@ -10,15 +10,19 @@ import { CartService } from 'src/app/services/cart.service';
 export class CartComponent implements OnInit {
 
   cart: ICartItem[] = [];
+  items: ICartItem[] = [];
 
-  constructor(private cartService: CartService) { }
-
+  constructor(private cartService: CartService) { 
+    this.items = cartService.getItems();
+  }
+  
   ngOnInit(): void {
     this.cartService.$cart.subscribe((cart) => {
       // this.cartService.getItems();
       this.cart = cart;
-      console.log(cart, 'logged from cart component')
+      console.log(cart, 'logged from cart component') //logs when products are added in details...
     });
+    console.log(this.items, 'cart from cart');
   }
 
 }
