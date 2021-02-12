@@ -1,0 +1,8 @@
+.sideborder {
+  padding: 3px;
+  border-left: gray 5px solid;
+}
+
+.divider {
+  margin: 7px;
+}

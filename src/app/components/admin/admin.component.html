@@ -1,12 +1,22 @@
-<p>admin works!</p>
+<p>ADMIN</p>
 <p>All Orders:</p>
 
- <div *ngFor="let o of orders">
-   <button>remove</button>
- id: {{o.id}}
- customerId: {{o.customerId}}
- payment menthod: {{o.paymentMethod}}
- Order row: {{o.productOrder}}
+  <div *ngFor="let o of orders">
+    <div class="sideborder">
+    Order: 
+    id: {{o.id}}
+    customerId: {{o.customerId}}
+    payment method: {{o.paymentMethod}}
+    order row: {{o.productOrders.productId}}
+    <div *ngFor="let po of o.productOrders"> 
+      Order row: 
+    id: {{po.productId}}
+    order Id: {{po.orderId}}
+    Quantity: {{po.quantity}}
+    total Price: {{po.totalPrice}}
+    </div>
+  </div>
+    <div class="divider"></div>
  </div>
 
  <p>All Customers:</p>
