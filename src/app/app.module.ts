@@ -18,7 +18,8 @@ import { ProductsComponent } from './components/products/products.component';
 import { MaterialModule } from './material/material.module';
 import { FormsModule } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AdminComponent } from './components/admin/admin.component'
+import { AdminComponent } from './components/admin/admin.component';
+
 
 
 
@@ -39,6 +40,7 @@ import { AdminComponent } from './components/admin/admin.component'
     DetailsComponent,
     ProductsComponent,
     AdminComponent,
+
   ],
   imports: [
     ReactiveFormsModule,
