@@ -1,12 +1,13 @@
-<p>checkout works!</p>
+<h1>CHECKOUT</h1>
 
-<p>Cart Content</p>
-<p>Total price: {{totalprice}} Kr</p>
+<p>Cart Content:</p>
 
 <div class="cart-item" *ngFor="let item of items">
-  <span>{{ item.productName }} </span>
-  <span>{{ item.totalPrice | currency }}</span>
+  <span>{{ item.product.productName }} </span>
+  <span>{{ item.amount }} </span>
+  <span>{{ item.product.price }}</span>
 </div>
+<p>Total price: {{totalprice}} Kr</p>
 
 <form [formGroup]="form" (ngSubmit)="onSubmit()">
 
@@ -45,6 +46,9 @@
     <input id="address" type="text" formControlName="address">
   </div>
 
-  <button class="button" type="submit">Purchase</button>
+  <button class="button" type="submit">Submit</button>
 
 </form>
+
+<!-- grayed out until customer information is submitted -->
+<button (click)="sendOrder()">Purchase</button>

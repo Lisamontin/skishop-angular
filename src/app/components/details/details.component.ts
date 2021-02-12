@@ -14,6 +14,7 @@ export class DetailsComponent implements OnInit {
   productId: number;
   product: IProduct;
   products: IProduct[];
+  
 
 
   constructor(
@@ -24,7 +25,8 @@ export class DetailsComponent implements OnInit {
 
   ngOnInit(): void {
     
-    this.productService.$products.subscribe((products) => { this.products = products; 
+    this.productService.$products.subscribe((products) => { 
+      this.products = products; 
       
       const routeParams = this.route.snapshot.paramMap;
       const productIdFromRoute = Number(routeParams.get('id'));
@@ -32,12 +34,14 @@ export class DetailsComponent implements OnInit {
       this.product = products.find(product => product.id === productIdFromRoute);
       console.log(this.product)
       console.log(products); });
+      
       this.productService.getAllProducts();
 
       //////////test/////////
 
     
-      // this.productService.getProduct(this.product.id);
+     
+      
       
       //////////////////////
       
@@ -46,8 +50,6 @@ export class DetailsComponent implements OnInit {
     addToCart(product: IProduct) {
       this.cartService.addToCart(product);
       console.log('added product to cart')
-      // window.alert('Your product has been added to the cart!');
-      
     }
 
 

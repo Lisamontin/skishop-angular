@@ -1,30 +1,29 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import ICartItem from 'src/app/models/ICartItem';
+import ICustomer from 'src/app/models/ICustomer';
 import IOrder from 'src/app/models/IOrder';
 import IProductOrder from 'src/app/models/IProductOrder';
 import { CartService } from 'src/app/services/cart.service';
+import { CustomerService } from 'src/app/services/customer.service';
 import { OrderService } from 'src/app/services/order.service';
 import { environment } from 'src/environments/environment';
-
-// import { REACTIVE_FORM_DIRECTIVES } from '@angular/forms'
-
 
 @Component({
   selector: 'app-checkout',
   templateUrl: './checkout.component.html',
   styleUrls: ['./checkout.component.css']
 })
+
 export class CheckoutComponent implements OnInit {
   
   constructor(
     private http: HttpClient,
     private orderService: OrderService,
     private cartService: CartService,
-    private formBuilder: FormBuilder,
-    private route: ActivatedRoute,
+    private customerService: CustomerService,
     private router: Router,
     public fb: FormBuilder
     
@@ -39,90 +38,65 @@ export class CheckoutComponent implements OnInit {
         address: ''
       });
     }
+    
+    items: ICartItem[] = [];
+    totalprice: number;
+    productOrders: IProductOrder[] = [];
+    form: FormGroup;
+    order: IOrder;
+    customers: ICustomer[] = [];
+    customer: ICustomer;
+    customerId: number;
+    orderToPost: IOrder;
+    SERVER_URL = environment.SERVER_URL; 
      
-
-     //DECLARE VARS
-     items: ICartItem[] = [];
-     totalprice: number;
-     productOrders: IProductOrder[] = [];
-     form: FormGroup;
-     order: IOrder;
-     orderToPost: IOrder;
-     SERVER_URL = environment.SERVER_URL;
-      
-    
-    ngOnInit(): void {
-      this.calculateTotalPrice();
-    }
-
-    //ON CLICK purchase button
-    onSubmit(): void {
-      //process checkoutdata here
-      console.log(this.form.value, "form value logged from onSubmit()");
-      
-      // var formData: any = new FormData();
-      //   formData.append("firstName", this.form.get('firstName').value);
-      //   formData.append("lastName", this.form.get('lastName').value);
-      //   formData.append("phoneNumber", this.form.get('phoneNumber').value);
-      //   formData.append("emamil", this.form.get('email').value);
-      //   formData.append("address", this.form.get('address').value);
-      
-      //   var formDataStringed = JSON.stringify(formData);
-      
-      const httpOptions = {
-        headers: new HttpHeaders({'Content-Type': 'application/json'})
-        }
-        
-        this.http.post(`${this.SERVER_URL}/Customers`, this.form.value, httpOptions).subscribe(
-          (response) => console.log(response),
-          (error) => console.log(error)
-          )
-          
-          
-          
-          // to fill productOrder (order rows)
-          
-          for (let i = 0; i < this.items.length; i++) {
-            const productId = this.items[i].product.id;
-            const quantity = this.items[i].amount;
-            const totalPrice = this.totalprice;
-            // const id = 2;
-            // const orderId = 2;//this.order.id; //error undefined.... how to get current id.....
-            
-            this.productOrders.push({ productId, quantity, totalPrice }); 
-            console.log("productOrder:", this.productOrders)
-          }; 
-
-          // // test stuff
-          // const productId = 1;
-          // const quantity = 2;
-          // const totalPrice = 3;
-          // const orderId = 2;
-          
-          // this.productOrder.push({ orderId, productId, quantity, totalPrice }); 
-          
-        
-
-      //const with final order to be sent
-        const orderToPost: IOrder = {  
-          // id: 1, // how to get this number.. its created when posted... needed in productOrder.. 
-          customerId: 1, // get customerId from getCustomer()... can it be done?
-          paymentMethod: 'AmEx',
-          productOrders: this.productOrders, //orderRow  
-      }
-console.log("final order: ", orderToPost)
-    this.orderService.postOrder(orderToPost);
-
-
-    this.items = this.cartService.clearCart();
-    console.log('order submitted');
-    this.form.reset();
-    
-    this.router.navigate(['/confirmation']);
-    }
-
-    // get info from form to post to customer table
+  ngOnInit(): void { 
+    this.customerService.$customers.subscribe((customers) => { this.customers = customers}); //needs to be called in sendOrder but wont run....
+    this.customerService.getAllCustomers();
+    this.calculateTotalPrice();
+  }
   
+  //submit customer information
+  onSubmit(): void {
+    const httpOptions = {
+      headers: new HttpHeaders({'Content-Type': 'application/json'})
+    }
+      
+    this.http.post(`${this.SERVER_URL}/Customers`, this.form.value, httpOptions).subscribe(  // move to customerService
+      (response) => console.log(response),
+      (error) => console.log(error)
+    )
+  }
+      
+  sendOrder() {     
+
+    for (let i = 0; i < this.items.length; i++) {
+      const productId = this.items[i].product.id;
+      const quantity = this.items[i].amount;
+      const totalPrice = this.totalprice;
+      
+      this.productOrders.push({ productId, quantity, totalPrice }); 
+      console.log("productOrder:", this.productOrders)
+    }; 
+    
+    let reversedCustomers: ICustomer[] = this.customers.reverse(); //To find id of last customer in arr
+      console.log(reversedCustomers[0].id, 'reversed customers');  
+      console.log(this.customers.length, 'customerlength logged in onSubmit() after form post, before ordertopost()')
+    
+      //const with final order to be sent
+    const orderToPost: IOrder = {  
+      customerId: reversedCustomers[0].id, //
+      paymentMethod: 'AmEx',
+      productOrders: this.productOrders, //orderRow  
+    }
+      // console.log("final order: ", orderToPost)
+      this.orderService.postOrder(orderToPost);
+      this.items = this.cartService.clearCart();
+      // console.log('order submitted');
+      this.form.reset();
+      
+      this.router.navigate(['/confirmation']);
+  }
   
   calculateTotalPrice() {
     this.totalprice = 0;
@@ -132,6 +106,3 @@ console.log("final order: ", orderToPost)
   }
 
 }
-
-//  gather all information to post order - customer information and orderinformation from 
-//  cart via order service (or cart service..)  

@@ -22,7 +22,7 @@ export class CartComponent implements OnInit {
       this.cart = cart;
       console.log(cart, 'logged from cart component') //logs when products are added in details...
     });
-    console.log(this.items, 'cart from cart');
+    console.log(this.items, 'items from cart');
   }
 
 }
